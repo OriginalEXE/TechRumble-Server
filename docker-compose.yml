@@ -1,0 +1,52 @@
+version: '3.5'
+
+services:
+  db:
+    image: postgres
+    restart: always
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: postgres
+    networks:
+      - techrumble
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 9999:8080
+    networks:
+      - techrumble
+
+  node:
+    container_name: techrumble-server
+    build:
+      dockerfile: Dockerfile
+      context: .
+    volumes:
+      - '.:/usr/src/app'
+      - '/usr/src/app/node_modules'
+    ports:
+      - '3000:3000'
+      - '4000:4000'
+    environment:
+      - NODE_ENV=development
+    command: npm run pm2
+    environment:
+      NODE_ENV: development
+      SSL: 'false'
+      URL: '127.1.0.0'
+      PORT: 4000
+    networks:
+      - techrumble
+    depends_on:
+      - db
+
+volumes:
+  db-data:
+    driver: local
+
+networks:
+  techrumble:
+    driver: bridge

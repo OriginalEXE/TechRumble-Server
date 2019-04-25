@@ -1,0 +1,32 @@
+{
+  "private": true,
+  "scripts": {
+    "start": "node src/index.js",
+    "pm2": "knex migrate:latest && pm2 start src/index.js --watch --no-daemon",
+    "pm2:prod": "knex migrate:latest --env production && pm2 start ecosystem.config.js",
+    "dev": "docker-compose -f docker-compose.yml up",
+    "deploy:dev": "docker-compose -f docker-compose.yml up --build",
+    "deploy:dev:clean": "docker-compose rm -f -v && docker-compose -f docker-compose.yml up --build",
+    "lint": "eslint --ext .js --ignore-path .eslintignore .",
+    "autofix": "eslint --fix --ext .js --ignore-path .eslintignore ."
+  },
+  "dependencies": {
+    "catchify": "^2.6.1",
+    "date-fns": "^2.0.0-alpha.27",
+    "dotenv": "^7.0.0",
+    "express": "^4.16.4",
+    "knex": "^0.16.3",
+    "lru-cache": "^5.1.1",
+    "objection": "^1.6.7",
+    "pg": "^7.9.0",
+    "socketcluster": "^14.3.3",
+    "twit": "^2.2.11",
+    "uuid": "^3.3.2",
+    "validator": "^10.11.0"
+  },
+  "devDependencies": {
+    "eslint": "^5.16.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.16.0"
+  }
+}
